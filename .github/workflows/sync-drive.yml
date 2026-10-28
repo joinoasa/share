@@ -1,0 +1,39 @@
+# Copies drive/ into the members' drive (oasa-files) with the agent key.
+# "00 Start Here" is replaced to match the repo; other folders only get new READMEs.
+name: Sync drive guides
+
+on:
+  push:
+    branches: [main]
+    paths: ['drive/**']
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: sync-drive
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    env:
+      AWS_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
+      AWS_DEFAULT_REGION: auto
+      AWS_REQUEST_CHECKSUM_CALCULATION: when_required
+      AWS_RESPONSE_CHECKSUM_VALIDATION: when_required
+      ENDPOINT: https://${{ secrets.R2_ACCOUNT_ID }}.r2.cloudflarestorage.com
+    steps:
+      - uses: actions/checkout@v7
+      - name: Check the agent key is set
+        id: key
+        run: |
+          if [ -z "$AWS_ACCESS_KEY_ID" ]; then echo "R2 secrets not set yet; skipping."; echo "ok=false" >> "$GITHUB_OUTPUT"; else echo "ok=true" >> "$GITHUB_OUTPUT"; fi
+      - name: Start Here (exact copy)
+        if: steps.key.outputs.ok == 'true'
+        run: aws s3 sync "drive/00 Start Here/" "s3://oasa-files/00 Start Here/" --delete --endpoint-url "$ENDPOINT"
+      - name: Folder READMEs (add only)
+        if: steps.key.outputs.ok == 'true'
+        run: aws s3 sync drive/ s3://oasa-files/ --exclude "00 Start Here/*" --size-only --endpoint-url "$ENDPOINT"

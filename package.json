@@ -1,0 +1,20 @@
+{
+	"name": "oasa-share",
+	"private": true,
+	"type": "module",
+	"description": "The OASA shared drive: share.joinoasa.org, share-admin.joinoasa.org and the nightly backup",
+	"scripts": {
+		"test": "node --test test/*.test.js",
+		"check": "npm test && npm run check:deploy",
+		"check:deploy": "wrangler deploy --dry-run -c wrangler.drive.jsonc && wrangler deploy --dry-run -c wrangler.admin.jsonc && wrangler deploy --dry-run -c wrangler.backup.jsonc",
+		"deploy:drive": "wrangler deploy -c wrangler.drive.jsonc",
+		"deploy:admin": "wrangler deploy -c wrangler.admin.jsonc",
+		"deploy:backup": "wrangler deploy -c wrangler.backup.jsonc"
+	},
+	"dependencies": {
+		"r2-explorer": "1.2.0"
+	},
+	"devDependencies": {
+		"wrangler": "4.155.0"
+	}
+}

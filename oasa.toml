@@ -1,0 +1,28 @@
+oasa = "files/0"
+
+[project]
+name = "share"
+summary = "The OASA shared drive: share.joinoasa.org (members), share-admin.joinoasa.org (admins) and the nightly backup, on Cloudflare R2"
+repo = "https://github.com/joinoasa/share"
+license = "Apache-2.0"
+nodes = []
+docs = ["README.md", "AGENTS.md"]
+
+[review]
+# Controls who can reach OASA's files, so a person reviews every change.
+security = "standard"
+
+[setup]
+tools = ["node 22"]
+steps = ["npm ci"]
+
+[[check]]
+name = "test"
+run = "npm test"
+
+[[check]]
+name = "bundle"
+run = "npm run check:deploy"
+
+[hardware]
+needed = false

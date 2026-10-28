@@ -1,0 +1,21 @@
+// Admin drive (admins only, by Cloudflare Access policy) at share-admin.joinoasa.org. Deployed by Cloudflare Workers Builds on every push to main.
+{
+	"$schema": "./node_modules/wrangler/config-schema.json",
+	"name": "oasa-share-admin",
+	"main": "src/drive.js",
+	"compatibility_date": "2026-10-01",
+	"assets": {
+		"directory": "./node_modules/r2-explorer/dashboard",
+		"binding": "ASSETS",
+		"html_handling": "auto-trailing-slash",
+		"not_found_handling": "single-page-application",
+		"run_worker_first": ["/api/*", "/share/*"]
+	},
+	// The only bucket this Worker can see. The binding name is what the drive shows.
+	"r2_buckets": [{ "binding": "oasa-admin", "bucket_name": "oasa-admin" }],
+	// No workers.dev or preview addresses: the custom domain, behind Cloudflare Access, is the only way in.
+	"workers_dev": false,
+	"preview_urls": false,
+	"routes": [{ "pattern": "share-admin.joinoasa.org", "custom_domain": true }],
+	"observability": { "enabled": true }
+}

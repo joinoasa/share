@@ -1,0 +1,19 @@
+// Nightly backup of both drives into oasa-backup (src/backup.js). No web address.
+// Deployed by Cloudflare Workers Builds on every push to main.
+{
+	"$schema": "./node_modules/wrangler/config-schema.json",
+	"name": "oasa-share-backup",
+	"main": "src/backup-worker.js",
+	"compatibility_date": "2026-10-01",
+	"r2_buckets": [
+		{ "binding": "SRC_FILES", "bucket_name": "oasa-files" },
+		{ "binding": "SRC_ADMIN", "bucket_name": "oasa-admin" },
+		// Only this Worker can write here. The agent key and the drives can't reach it.
+		{ "binding": "BACKUP", "bucket_name": "oasa-backup" }
+	],
+	// 07:23 UTC every night.
+	"triggers": { "crons": ["23 7 * * *"] },
+	"workers_dev": false,
+	"preview_urls": false,
+	"observability": { "enabled": true }
+}

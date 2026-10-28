@@ -1,0 +1,22 @@
+{
+  "tool": "oasa_toml.py 0.3.0",
+  "date": "2026-10-28",
+  "commit": null,
+  "passed": true,
+  "results": [
+    {
+      "name": "test",
+      "command": "npm test",
+      "exitCode": 0,
+      "seconds": 0.3,
+      "required": true
+    },
+    {
+      "name": "bundle",
+      "command": "npm run check:deploy",
+      "exitCode": 0,
+      "seconds": 5.8,
+      "required": true
+    }
+  ]
+}
