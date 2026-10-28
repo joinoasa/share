@@ -37,3 +37,13 @@ jobs:
       - name: Folder READMEs (add only)
         if: steps.key.outputs.ok == 'true'
         run: aws s3 sync drive/ s3://oasa-files/ --exclude "00 Start Here/*" --size-only --endpoint-url "$ENDPOINT"
+      # Guardrail: the agent key must NOT reach the admin drive or the backup.
+      - name: Agent key can't reach oasa-admin or oasa-backup
+        if: steps.key.outputs.ok == 'true'
+        run: |
+          for b in oasa-admin oasa-backup; do
+            if aws s3 ls "s3://$b/" --endpoint-url "$ENDPOINT" >/dev/null 2>&1; then
+              echo "::error::The agent key can read $b. Re-scope it to oasa-files only."; exit 1
+            fi
+            echo "OK: no access to $b"
+          done
