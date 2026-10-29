@@ -24,6 +24,8 @@ This is OASA's shared drive for members. Anything you put here, every member can
 ## Quick links
 
 - Member hub: https://joinoasa.org/members/
+- Setup checklist: https://joinoasa.org/docs/setup-checklist/
+- How work gets done: https://joinoasa.org/docs/how-work-gets-done/
 - Tech tree: https://joinoasa.org/techtree/
 - GitHub: https://github.com/joinoasa
 - Discord: https://discord.gg/v6vTxaKV3
